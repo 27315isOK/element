@@ -1,11 +1,15 @@
+<!-- 这个文件就是整个页面的结构文件 -->
 <template>
   <div :class="classObj" class="app-wrapper">
     <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside" />
+    <!-- sidebar:左侧菜单栏 -->
     <sidebar class="sidebar-container" />
     <div class="main-container">
       <div :class="{'fixed-header':fixedHeader}">
+        <!-- navbar:顶部的导航条 -->
         <navbar />
       </div>
+      <!-- 中间的内容区域，其实这个组件里面就是一个<router-view />组件-->
       <app-main />
     </div>
   </div>

@@ -6,43 +6,25 @@ Vue.use(Router)
 /* Layout */
 import Layout from '@/layout'
 
-/**
- * Note: sub-menu only appear when route children.length >= 1
- * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
- *
- * hidden: true                   if set true, item will not show in the sidebar(default is false)
- * alwaysShow: true               if set true, will always show the root menu
- *                                if not set alwaysShow, when item has more than one children route,
- *                                it will becomes nested mode, otherwise not show the root menu
- * redirect: noRedirect           if set noRedirect will no redirect in the breadcrumb
- * name:'router-name'             the name is used by <keep-alive> (must set!!!)
- * meta : {
-    roles: ['admin','editor']    control the page roles (you can set multiple roles)
-    title: 'title'               the name show in sidebar and breadcrumb (recommend set)
-    icon: 'svg-name'/'el-icon-x' the icon show in the sidebar
-    breadcrumb: false            if set false, the item will hidden in breadcrumb(default is true)
-    activeMenu: '/example/list'  if set path, the sidebar will highlight the path you set
-  }
- */
 
-/**
- * constantRoutes
- * a base page that does not have permission requirements
- * all roles can be accessed
- */
 export const constantRoutes = [
   {
     path: '/login',
     component: () => import('@/views/login/index'),
     hidden: true
   },
-
   {
     path: '/404',
     component: () => import('@/views/404'),
     hidden: true
   },
+  {
+    path: '/my',
+    component: Layout,  //这些Layout是layout文件夹下的index文件,而内容是通过<app-main/>也就是<router-view />跳转路由得，所以<app-main/>就是我们的内容区
+    name: 'my',
+    meta: { title: '我的', icon: 'venom' }
 
+  },
   {
     path: '/',
     component: Layout,
@@ -51,32 +33,95 @@ export const constantRoutes = [
       path: 'dashboard',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
+      meta: { title: '仪表盘', icon: 'dashboard' }
     }]
   },
-
   {
-    path: '/example',
+    path: '/banner',
     component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    meta: { title: 'Example', icon: 'el-icon-s-help' },
+    redirect:'/banner/list',
+    children:[{
+      path:'list',
+      name:'List',
+      component:()=>import('@/views/banner/index'),
+      meta: { title: '轮播图', icon: 'banner' }
+    }]
+    
+  },
+  {
+    path: '/order',
+    component: Layout,
+    redirect:'/order/list',
+    children:[{
+      path:'list',
+      name:'orderList',
+      component:()=>import('@/views/order/order'),
+      meta: { title: '订单查询', icon: 'form' }
+    }]   
+  },
+  {
+    path: '/users',
+    component: Layout,
+    redirect:'/users/allusers',
+    children:[{
+      path:'allusers',
+      name:'usersall',
+      component:()=>import('@/views/users/users'),
+      meta: { title: '用户查询', icon: 'users' }
+    }]   
+  },
+  //这里的路由配置文件，和左侧菜单是一一对应的
+  //只要菜单的子路由超过两个，左侧菜单就会出现二级菜单
+  {
+    path: '/pro',
+    component: Layout,
+    redirect: '/pro/all',
+    name: 'allpro',
+    meta: { title: '商品管理', icon: 'el-icon-s-help' },
     children: [
       {
-        path: 'table',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'Table', icon: 'table' }
+        path: 'all',
+        name: 'all',
+        component: () => import('@/views/pro/all'),
+        meta: { title: '查看所有商品', icon: 'table' }
+        // title属性是菜单显示的名字 icon属性就是左侧的图标
       },
       {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
+        path: 'recommend',
+        name: 'recommend',
+        component: () => import('@/views/pro/recommend'),
+        meta: { title: '推荐列表', icon: 'recommend' }
+      },
+      {
+        path: 'flash',
+        name: 'flash',
+        component: () => import('@/views/pro/flash'),
+        meta: { title: '秒杀列表', icon: 'flash' }
       }
     ]
   },
-
+  {
+    path: '/admin',
+    component: Layout,
+    redirect: '/example/adminlist',
+    name: 'Example',
+    meta: { title: '管理员', icon: 'admin' },
+    children: [
+      {
+        path: 'adminlist',
+        name: 'adminlist',
+        component: () => import('@/views/adminlist/adminlist'),
+        meta: { title: '管理员列表', icon: 'list' }
+        // title属性是菜单显示的名字 icon属性就是左侧的图标
+      },
+      {
+        path: 'add',
+        name: 'add',
+        component: () => import('@/views/add/add'),
+        meta: { title: '添加管理员', icon: 'add' }
+      }
+    ]
+  },
   {
     path: '/form',
     component: Layout,
@@ -89,7 +134,6 @@ export const constantRoutes = [
       }
     ]
   },
-
   {
     path: '/nested',
     component: Layout,
@@ -148,7 +192,6 @@ export const constantRoutes = [
       }
     ]
   },
-
   {
     path: 'external-link',
     component: Layout,

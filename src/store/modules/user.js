@@ -32,7 +32,7 @@ const actions = {
   login({ commit }, userInfo) {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password }).then(response => {
+      login({ adminname: username.trim(), password: password }).then(response => {
         const { data } = response
         commit('SET_TOKEN', data.token)
         setToken(data.token)
@@ -44,20 +44,20 @@ const actions = {
   },
 
   // get user info
-  getInfo({ commit, state }) {
+  getInfo({ commit, state }) {  //这个getInfo是vuex里的actions方法调用，把以前的context解构到一个对象中{commit, state}
     return new Promise((resolve, reject) => {
-      getInfo(state.token).then(response => {
+      getInfo(state.token).then(response => {  //这个getInfo是一个方法，用来调用一个请求接口 是开头从@/api/user调用的方法，是一个promise
         const { data } = response
 
-        if (!data) {
+        if (!data) {  //如果没有data就会返回一个错误
           return reject('Verification failed, please Login again.')
         }
 
         const { name, avatar } = data
 
-        commit('SET_NAME', name)
-        commit('SET_AVATAR', avatar)
-        resolve(data)
+        commit('SET_NAME', name)  //把请求接口回来的name 放在vuex-state中
+        commit('SET_AVATAR', avatar)  //把请求接口回来的avatar 放在vuex-state中
+        resolve(data)  //把成功信息返回
       }).catch(error => {
         reject(error)
       })
@@ -67,14 +67,14 @@ const actions = {
   // user logout
   logout({ commit, state }) {
     return new Promise((resolve, reject) => {
-      logout(state.token).then(() => {
+      try{
         removeToken() // must remove  token  first
         resetRouter()
         commit('RESET_STATE')
         resolve()
-      }).catch(error => {
-        reject(error)
-      })
+      }catch(err){
+        reject(err)
+      }
     })
   },
 

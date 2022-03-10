@@ -75,7 +75,7 @@ export default {
     return {
       loginForm: {
         username: 'admin',
-        password: '111111'
+        password: '123456'
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -105,11 +105,17 @@ export default {
         this.$refs.password.focus()
       })
     },
+    
     handleLogin() {
-      this.$refs.loginForm.validate(valid => {
+      //点击登录按钮的时候，获取到表单组件对象，然后进行验证
+      this.$refs.loginForm.validate(valid => {  //validate就是表单的验证规则都通过的情况下，即为true
         if (valid) {
           this.loading = true
+
+          //调用actions中的登录方法，登录成功就会在then里面做操作，如果报错就会在catch里面做操作
+
           this.$store.dispatch('user/login', this.loginForm).then(() => {
+            //如果登录成功，则跳转到首页或者原来的页面
             this.$router.push({ path: this.redirect || '/' })
             this.loading = false
           }).catch(() => {

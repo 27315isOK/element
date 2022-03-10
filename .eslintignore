@@ -1,4 +1,7 @@
+# 这个文件是全局eslint代码格式检查文件，可以在这里设置取消代码检查，这样就不会无意义报错了
 build/*.js
 src/assets
 public
 dist
+*.js
+*.vue 

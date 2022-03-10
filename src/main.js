@@ -1,19 +1,19 @@
 import Vue from 'vue'
 
-import 'normalize.css/normalize.css' // A modern alternative to CSS resets
+import 'normalize.css/normalize.css' // 导入一个通用的css样式
 
-import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
-import locale from 'element-ui/lib/locale/lang/en' // lang i18n
+import ElementUI from 'element-ui'  //导入element-ui
+import 'element-ui/lib/theme-chalk/index.css' //导入element-ui的样式
+import locale from 'element-ui/lib/locale/lang/en' // 导入英文语言
 
-import '@/styles/index.scss' // global css
+import '@/styles/index.scss' // @指src目录 这里是导入公共样式文件
 
 import App from './App'
 import store from './store'
 import router from './router'
 
-import '@/icons' // icon
-import '@/permission' // permission control
+import '@/icons' // 加载svg格式的图标;如需使用其他图标，将svg格式图标放在icons/svg目录下即可直接使用
+import '@/permission' // 导航守卫；登陆状态的验证
 
 /**
  * If you don't want to use mock-server
